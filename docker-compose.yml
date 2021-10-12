@@ -1,0 +1,45 @@
+version: '3.8'
+services: 
+  # APP FRONTEND
+  front:
+    build:
+      context: ./frontend
+#      args:
+#        - BACKEND_URL='${APP_API_URL}'
+    ports: 
+        - 3000:80
+    depends_on: 
+        - backend
+
+  # BACKEND
+  backend:
+    build:
+      context: ./lib_catalog
+#      args: 
+#         - DB_HOST=${DB_HOST}
+#         - DB_DATABASE=${DB_NAME}
+#         - DB_USERNAME=${DB_USER}
+#         - DB_PASS=${DB_PASSWORD}'
+#         - BACKEND_URL=${APP_API_URL}
+    command: /bin/sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports: 
+        - 8000:8000
+    depends_on:
+        - database
+
+  # DATABASE
+  database:
+    build:
+      context: ./db
+    image: postgres:12-alpine
+#    volumes: 
+#        - postgres_data:/var/lib/postgresql/data/
+    ports: 
+        - 5432:5432
+    environment: 
+        - POSTGRES_DB=${DB_NAME}
+        - POSTGRES_USER=${DB_USER}
+        - POSTGRES_PASSWORD=${DB_PASSWORD}
+        - POSTGRES_HOST_AUTH_METHOD=trust
+#volumes:
+#   postgres_data:
