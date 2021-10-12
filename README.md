@@ -47,7 +47,7 @@ COPY config/default.conf /etc/nginx/conf.d/default.conf
 docker build -t devschool/frontend .
 
 # Test image
-docker run -p 3000:80 devschool/frontend .
+docker run -p 3000:80 devschool/frontend
 ```
 # 2 Лекция
 Написать Dockerfile для lib_catalog, postgresql, собрать и запустить
